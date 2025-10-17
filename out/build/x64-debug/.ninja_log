@@ -1,0 +1,4 @@
+# ninja log v6
+15	155	7823154118376559	build.ninja	166be153f688f181
+23	798	7820789846449535	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.obj	67c62e44b0bb04d1
+799	1125	7820789854203650	Trading-Engine.exe	c77d84ad042a2ec

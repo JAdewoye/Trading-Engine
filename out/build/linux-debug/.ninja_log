@@ -1,0 +1,6 @@
+# ninja log v5
+2801	2908	1760629027026352735	Trading-Engine	6e6be0f162ba664c
+2	352	1760629024470457116	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o	7f5d7339bf2e6c1f
+2	2798	1760629026915724418	CMakeFiles/Trading-Engine.dir/src/server.cpp.o	99799bf1291fcb6d
+1	4	0	clean	a31eedcededa8236
+2	313	1760709386525080798	build.ninja	91e1ab8ba23835a6

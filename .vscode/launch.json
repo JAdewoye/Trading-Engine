@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Trading-Engine",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/out/build/linux-debug/Trading-Engine", // path to your executable
+      "args": [], // any command-line arguments for your program
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}", // working directory
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb", // path to gdb
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
