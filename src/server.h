@@ -12,8 +12,16 @@
 //----------------------------------------------------------------------------------
 class Server {
 public:
-    Server(std::string name_ = "Server") noexcept;
-    virtual ~Server();
+    Server(const std::string& name) : name_(name),           
+          running_(false),        
+          stop_requested_(false)  
+    {}
+
+    virtual ~Server() {
+        // Attempt graceful shutdown if still running
+        stop();
+        join();
+    }
 
     // Copy Constructor and assignment disabled
     Server(const Server&) = delete;
@@ -36,27 +44,25 @@ public:
     bool is_running() const noexcept;
 
     // Human-readable server name for logs.
-    const std::string& get_name() const noexcept { return name; }
+    const std::string& get_name() const noexcept { return name_; }
 
 protected:
     // This is executed inside the thread created by start().
     // Implementation should periodically check stopRequested() and return quickly on shutdown.
     virtual void run() = 0;
 
-    virtual void handle_connection(/* socket */) = 0;
-
     // Helper: wait for either stop requested or timeout (ms). Returns true if stop requested.
     bool wait_for_stop(long milliseconds);
 
-    void Server::notify_stopped() noexcept;
+    void notify_stopped() noexcept;
 
 private:
     void thread_main(); // internal entrypoint for the thread
 
-    std::string name;
-    std::thread thread;
-    std::atomic<bool> running;
-    std::atomic<bool> stop_requested;
-    mutable std::mutex mtx;
-    std::condition_variable cv;
+    std::string name_;
+    std::thread thread_;
+    std::atomic<bool> running_;
+    std::atomic<bool> stop_requested_;
+    mutable std::mutex mtx_;
+    std::condition_variable cv_;
 };
