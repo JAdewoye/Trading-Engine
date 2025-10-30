@@ -3,11 +3,15 @@
 //----------------------------------------------------------------------------------
 #include "httpserver.h"
 #include <iostream>
+#include <chrono>
+#include <thread>
+#include <functional> 
+#include <utility>  
 #include <boost/asio.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/json.hpp>
-//#include <boost/beast/version.hpp>
+#include "TradeQueue.h"
 
 
 namespace asio  = boost::asio;
@@ -21,15 +25,28 @@ HttpServer::run()
     try {
     
         std::cout << "HTTP Server started on port " << HttpServer::port_ << "\n";
+
+        // Shared trade queue for incoming trades 
+        TradeQueue tradeQueue(2000);
+
         while (!get_stop_requested()) {
+
+            // Create a socket that will be moved into new threads
             tcp::socket socket(HttpServer::io_context_);
             std::cout << "HTTP Server: Waiting for new connection...\n";
+
             // Wait for a new client
             HttpServer::acceptor_.accept(socket);
 
             try {
-                // Handle the client connection
-                handle_connection(std::move(socket));
+                std::thread client_thread(
+                    &HttpServer::handle_connection, 
+                    this, 
+                    std::move(socket), 
+                    std::ref(tradeQueue)
+                );
+                // Detach the thread to allow independent execution
+                client_thread.detach(); 
             }
             catch (const std::exception& e) {
                 std::cerr << "Connection handling error: " << e.what() << "\n";
@@ -42,7 +59,7 @@ HttpServer::run()
 }
 //----------------------------------------------------------------------------------
 void
-HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
+HttpServer::handle_connection(boost::asio::ip::tcp::socket socket, TradeQueue& tradeQueue)
 {
     namespace beast = boost::beast;
     namespace http = beast::http;
@@ -59,9 +76,21 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
         if (req.method() == http::verb::post && req.target() == "/webhook") {
             // Parse JSON payload
             json::value payload = json::parse(req.body());
-            std::cout << "Received webhook with payload: " << req.body() << std::endl;
+            std::string symbol = json::value_to<std::string>(payload.at("symbol"));
+            std::string side = json::value_to<std::string>(payload.at("side"));
+            double price = json::value_to<double>(payload.at("price"));
+            std::cout << "Request to " << side << " " << symbol << " at $" << price << "\n";
 
-            //  Here is where we trigger trade logic:
+            // Get current timestamp
+            const auto timestamp = static_cast<uint64_t>(
+                std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()
+                ).count()
+            );
+
+            // Enqueue trade
+            tradeQueue.pushBack(timestamp, symbol, side, price);
+
 
             // Send OK response
             http::response<http::string_body> res{http::status::ok, req.version()};

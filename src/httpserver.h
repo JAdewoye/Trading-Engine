@@ -3,6 +3,7 @@
 // Inlcudes
 //----------------------------------------------------------------------------------
 #include "server.h"
+#include "TradeQueue.h"
 #include <boost/asio.hpp>
 //----------------------------------------------------------------------------------
 // Macros
@@ -22,9 +23,9 @@ public:
     {}
 
     void run() override;
+    void handle_connection(tcp::socket socket, TradeQueue& tradeQueue);
 
 private:
-    void handle_connection(tcp::socket socket);
 
     unsigned short port_;
     boost::asio::io_context io_context_;
