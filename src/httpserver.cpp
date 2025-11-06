@@ -26,9 +26,6 @@ HttpServer::run()
     
         std::cout << "HTTP Server started on port " << HttpServer::port_ << "\n";
 
-        // Shared trade queue for incoming trades 
-        TradeQueue tradeQueue(2000);
-
         while (!get_stop_requested()) {
 
             // Create a socket that will be moved into new threads
@@ -42,8 +39,7 @@ HttpServer::run()
                 std::thread client_thread(
                     &HttpServer::handle_connection, 
                     this, 
-                    std::move(socket), 
-                    std::ref(tradeQueue)
+                    std::move(socket)
                 );
                 // Detach the thread to allow independent execution
                 client_thread.detach(); 
@@ -59,7 +55,7 @@ HttpServer::run()
 }
 //----------------------------------------------------------------------------------
 void
-HttpServer::handle_connection(boost::asio::ip::tcp::socket socket, TradeQueue& tradeQueue)
+HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
 {
     namespace beast = boost::beast;
     namespace http = beast::http;
@@ -89,7 +85,7 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket, TradeQueue& t
             );
 
             // Enqueue trade
-            tradeQueue.pushBack(timestamp, symbol, side, price);
+            queue_.pushBack(timestamp, symbol, side, price);
 
 
             // Send OK response

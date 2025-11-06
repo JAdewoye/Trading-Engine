@@ -4,6 +4,8 @@
 #include "httpserver.h"
 #include "Trading-Engine.h"
 #include <iostream>
+#include "TradeQueue.h"
+#include "TradeExecution.h"
 
 //----------------------------------------------------------------------------------
 // Function Definitions
@@ -13,7 +15,9 @@ int main()
 {
 	std::cout << "Trading Engine Starting...\n";
     try {
-        HttpServer server("http_server", HTTP_DEFAULT_PORT);
+        TradeQueue tradeQueue(2000);
+        TradeExecutionPool executionPool(100, tradeQueue);
+        HttpServer server("http_server", HTTP_DEFAULT_PORT, tradeQueue);
         server.start();
 
         std::cout << "Server is running.\n";

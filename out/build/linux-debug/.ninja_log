@@ -1,18 +1,9 @@
 # ninja log v5
-7	6018	1761228881803142237	CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o	8f65ceeb9bd51491
-2	313	1761841781016507889	build.ninja	91e1ab8ba23835a6
+7	6641	1762175030441678932	CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o	8f65ceeb9bd51491
+2	313	1762429367946147767	build.ninja	91e1ab8ba23835a6
 2	6	0	clean	a31eedcededa8236
 7	1253	1761228877055699311	CMakeFiles/Trading-Engine.dir/src/server.cpp.o	9798d687341f5bb
-7	3022	1761229156447289332	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o	5ce480b1193ed876
-3022	3211	1761229156636775161	Trading-Engine	56e4fe1bd6da8648
-12	3250	1761842505872516346	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o	5ce480b1193ed876
-8	488	1761842638188274617	CMakeFiles/Trading-Engine.dir/src/TradeQueue.cpp.o	dfe43d53dbace6f2
-8	3099	1761842640795606857	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o	5ce480b1193ed876
-7	5665	1761842774483142039	CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o	8f65ceeb9bd51491
-5665	5887	1761842774717142045	Trading-Engine	fd607dc9ca7fb235
+10	3789	1762191737599044536	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o	5ce480b1193ed876
+3789	4044	1762191737862102235	Trading-Engine	ea60964626ab455e
+10	940	1762191734760377109	CMakeFiles/Trading-Engine.dir/src/TradeExecution.cpp.o	8b2bc3e469d304f0
 8	465	1761842805352421826	CMakeFiles/Trading-Engine.dir/src/TradeQueue.cpp.o	dfe43d53dbace6f2
-7	3133	1761842808011928862	CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o	5ce480b1193ed876
-7	5733	1761842810600328916	CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o	8f65ceeb9bd51491
-5733	5921	1761842810801928921	Trading-Engine	fd607dc9ca7fb235
-9	6043	1761843164611276434	CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o	8f65ceeb9bd51491
-6043	6246	1761843164830145235	Trading-Engine	fd607dc9ca7fb235

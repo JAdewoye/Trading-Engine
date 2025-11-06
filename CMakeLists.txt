@@ -12,6 +12,7 @@ set(COMMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/httpserver.cpp
     ${CMAKE_SOURCE_DIR}/src/Trading-Engine.cpp
     ${CMAKE_SOURCE_DIR}/src/TradeQueue.cpp
+    ${CMAKE_SOURCE_DIR}/src/TradeExecution.cpp
 )
 
 # -------------------------- BOOST --------------------------

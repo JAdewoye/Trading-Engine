@@ -81,6 +81,14 @@ build CMakeFiles/Trading-Engine.dir/src/TradeQueue.cpp.o: CXX_COMPILER__Trading-
   OBJECT_DIR = CMakeFiles/Trading-Engine.dir
   OBJECT_FILE_DIR = CMakeFiles/Trading-Engine.dir/src
 
+build CMakeFiles/Trading-Engine.dir/src/TradeExecution.cpp.o: CXX_COMPILER__Trading-Engine_unscanned_Debug /home/jadewoye/Trading-Engine/src/TradeExecution.cpp || cmake_object_order_depends_target_Trading-Engine
+  DEFINES = -DBOOST_ATOMIC_DYN_LINK -DBOOST_ATOMIC_NO_LIB -DBOOST_CONTAINER_DYN_LINK -DBOOST_CONTAINER_NO_LIB -DBOOST_JSON_DYN_LINK -DBOOST_JSON_NO_LIB -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB -DBOOST_THREAD_DYN_LINK -DBOOST_THREAD_NO_LIB
+  DEP_FILE = CMakeFiles/Trading-Engine.dir/src/TradeExecution.cpp.o.d
+  FLAGS = -g -std=gnu++20
+  INCLUDES = -I/home/jadewoye/Trading-Engine/src
+  OBJECT_DIR = CMakeFiles/Trading-Engine.dir
+  OBJECT_FILE_DIR = CMakeFiles/Trading-Engine.dir/src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Trading-Engine
@@ -89,7 +97,7 @@ build CMakeFiles/Trading-Engine.dir/src/TradeQueue.cpp.o: CXX_COMPILER__Trading-
 #############################################
 # Link the executable Trading-Engine
 
-build Trading-Engine: CXX_EXECUTABLE_LINKER__Trading-Engine_Debug CMakeFiles/Trading-Engine.dir/src/server.cpp.o CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o CMakeFiles/Trading-Engine.dir/src/TradeQueue.cpp.o | /usr/lib/x86_64-linux-gnu/libboost_system.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_json.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_container.so.1.83.0
+build Trading-Engine: CXX_EXECUTABLE_LINKER__Trading-Engine_Debug CMakeFiles/Trading-Engine.dir/src/server.cpp.o CMakeFiles/Trading-Engine.dir/src/httpserver.cpp.o CMakeFiles/Trading-Engine.dir/src/Trading-Engine.cpp.o CMakeFiles/Trading-Engine.dir/src/TradeQueue.cpp.o CMakeFiles/Trading-Engine.dir/src/TradeExecution.cpp.o | /usr/lib/x86_64-linux-gnu/libboost_system.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_json.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.83.0 /usr/lib/x86_64-linux-gnu/libboost_container.so.1.83.0
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libboost_system.so.1.83.0  /usr/lib/x86_64-linux-gnu/libboost_thread.so.1.83.0  /usr/lib/x86_64-linux-gnu/libboost_json.so.1.83.0  -lpthread  /usr/lib/x86_64-linux-gnu/libboost_atomic.so.1.83.0  /usr/lib/x86_64-linux-gnu/libboost_container.so.1.83.0
   OBJECT_DIR = CMakeFiles/Trading-Engine.dir
