@@ -26,7 +26,7 @@ private:
     TradeQueue& trade_queue_;
 
     void worker_loop(void);
-    void execute_trade(const Trade& trade);
-    void log_trade_execution(const Trade& trade);
+    void execute_trade(const Cell& cell);
+    void log_trade_execution(const Cell& cell);
 };
 

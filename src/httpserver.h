@@ -16,16 +16,11 @@ using tcp = boost::asio::ip::tcp;
 //----------------------------------------------------------------------------------
 class HttpServer : public Server {
 public:
-    HttpServer(const std::string& name, unsigned short port, TradeQueue& queue)
-        : Server(name), 
-          port_(port),
-          queue_(queue),
-          io_context_(),
-          acceptor_(io_context_, tcp::endpoint(boost::asio::ip::tcp::v4(), port_)) 
-    {}
-
+    HttpServer(const std::string& name, unsigned short port, TradeQueue& queue, size_t num_workers);
+    ~HttpServer();
     void run() override;
     void handle_connection(tcp::socket socket);
+    void start_accept();
 
 private:
 
@@ -33,5 +28,7 @@ private:
     boost::asio::io_context io_context_;
     tcp::acceptor acceptor_;
     TradeQueue& queue_;
+    std::vector<std::thread> workers_;
+    size_t num_workers_;
 };
 

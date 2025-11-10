@@ -15,6 +15,7 @@
 			"set_property",
 			"find_package",
 			"boost_find_component",
+			"target_compile_definitions",
 			"target_include_directories"
 		],
 		"files" : 
@@ -33,19 +34,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 31,
+				"line" : 35,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 35,
+				"line" : 40,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 23,
+				"line" : 27,
 				"parent" : 0
 			},
 			{
@@ -109,7 +110,13 @@
 			{
 				"command" : 5,
 				"file" : 0,
-				"line" : 33,
+				"line" : 37,
+				"parent" : 0
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 38,
 				"parent" : 0
 			}
 		]
@@ -164,12 +171,16 @@
 				{
 					"backtrace" : 2,
 					"define" : "BOOST_THREAD_NO_LIB"
+				},
+				{
+					"backtrace" : 15,
+					"define" : "TESTING"
 				}
 			],
 			"includes" : 
 			[
 				{
-					"backtrace" : 15,
+					"backtrace" : 16,
 					"path" : "/home/jadewoye/Trading-Engine/src"
 				}
 			],

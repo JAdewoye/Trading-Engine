@@ -15,14 +15,12 @@ int main()
 {
 	std::cout << "Trading Engine Starting...\n";
     try {
-        TradeQueue tradeQueue(2000);
+        TradeQueue tradeQueue(200);
         TradeExecutionPool executionPool(100, tradeQueue);
-        HttpServer server("http_server", HTTP_DEFAULT_PORT, tradeQueue);
+        HttpServer server("http_server", HTTP_DEFAULT_PORT, tradeQueue, 200);
+        
         server.start();
-
-        std::cout << "Server is running.\n";
         std::cin.get();
-
         server.stop();
         server.join();
     }

@@ -15,6 +15,10 @@ set(COMMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/TradeExecution.cpp
 )
 
+set(COMMON_DEFS
+    TESTING
+)
+
 # -------------------------- BOOST --------------------------
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
@@ -30,6 +34,7 @@ endif()
 # ------------------------- Executable -------------------------
 add_executable(Trading-Engine ${COMMON_SOURCES})
 
+target_compile_definitions(Trading-Engine PRIVATE ${COMMON_DEFS})
 target_include_directories(Trading-Engine PRIVATE ${INCLUDES} ${Boost_INCLUDE_DIRS})
 
 target_link_libraries(Trading-Engine PRIVATE ${Boost_LIBRARIES} pthread)

@@ -25,7 +25,7 @@ TradeExecutionPool::~TradeExecutionPool()
 void 
 TradeExecutionPool::worker_loop()
 {
-    Trade trade;
+    Cell trade;
     while (stop_requested_.load(std::memory_order_acquire) == false) {
         if (trade_queue_.popFront(trade)){
             execute_trade(trade);
@@ -37,13 +37,13 @@ TradeExecutionPool::worker_loop()
 }
 //----------------------------------------------------------------------------------
 void
-TradeExecutionPool::execute_trade(const Trade& trade)
+TradeExecutionPool::execute_trade(const Cell& cell)
 {
 
 }
 //----------------------------------------------------------------------------------
 void
-TradeExecutionPool::log_trade_execution(const Trade& trade)
+TradeExecutionPool::log_trade_execution(const Cell& cell)
 {
-    std::cout << "Executed trade: " << trade.side << " " << trade.symbol << " at $" << trade.price << "\n";
+    std::cout << "Executed trade: " << cell.trade.side << " " << cell.trade.symbol << " at $" << cell.trade.price << "\n";
 }

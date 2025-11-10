@@ -19,39 +19,73 @@ using tcp       = asio::ip::tcp;
 //----------------------------------------------------------------------------------
 // Function Definitions
 //----------------------------------------------------------------------------------
+HttpServer::HttpServer(const std::string& name, unsigned short port, TradeQueue& queue, size_t num_workers)
+    : Server(name), 
+      port_(port),
+      queue_(queue),
+      num_workers_(num_workers),
+      io_context_(),
+      acceptor_(io_context_, tcp::endpoint(boost::asio::ip::tcp::v4(), port_)) 
+{}
+//----------------------------------------------------------------------------------
+HttpServer::~HttpServer()
+{
+    for (auto& worker : workers_) {
+        if (worker.joinable()) {
+            worker.join();
+        }
+    }
+}
+//----------------------------------------------------------------------------------
 void
 HttpServer::run()
 {
     try {
     
-        std::cout << "HTTP Server started on port " << HttpServer::port_ << "\n";
+        std::cout << "HTTP Server started on port " << HttpServer::port_ << ". We are now read to trade!\n";
 
+        auto guard = boost::asio::make_work_guard(io_context_);
+
+        start_accept();
+
+        // Launch worker threads to run the io_context
+        for (size_t i = 0; i < num_workers_; ++i) {
+            workers_.emplace_back([this]{
+                 this->io_context_.run(); 
+            });
+        }
+
+        // Wait for shutdown (your loop can do other things)
         while (!get_stop_requested()) {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+        
+        // Stop io_context_ and let the work_guard fall out of scope
+        io_context_.stop();
 
-            // Create a socket that will be moved into new threads
-            tcp::socket socket(HttpServer::io_context_);
-            std::cout << "HTTP Server: Waiting for new connection...\n";
-
-            // Wait for a new client
-            HttpServer::acceptor_.accept(socket);
-
-            try {
-                std::thread client_thread(
-                    &HttpServer::handle_connection, 
-                    this, 
-                    std::move(socket)
-                );
-                // Detach the thread to allow independent execution
-                client_thread.detach(); 
-            }
-            catch (const std::exception& e) {
-                std::cerr << "Connection handling error: " << e.what() << "\n";
-            }
+        // Join threads or run the io_context in the main thread
+        for (auto& worker : workers_) {
+            worker.join();
         }
     }
     catch (const std::exception& e) {
         std::cerr << "Server error: " << e.what() << "\n";
     }
+}
+//----------------------------------------------------------------------------------
+void HttpServer::start_accept() {
+    auto socket = std::make_shared<tcp::socket>(io_context_);
+    acceptor_.async_accept(*socket, [this, socket](boost::system::error_code ec) mutable {
+        if (!ec) {
+            // Handle the connection in a separate function
+            std::cout << "Accepted new connection\n";
+            handle_connection(std::move(*socket));
+        } else {
+            std::cout << "Accept error: " << ec.message() << "\n";
+            // Log the error
+        }
+        start_accept(); // Continue accepting new connections
+    });
 }
 //----------------------------------------------------------------------------------
 void
@@ -85,7 +119,21 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
             );
 
             // Enqueue trade
-            queue_.pushBack(timestamp, symbol, side, price);
+            if (queue_.pushBack(timestamp, symbol, side, price)) {
+                // Send OK response
+                http::response<http::string_body> res{http::status::ok, req.version()};
+                res.set(http::field::content_type, "application/json");
+                res.body() = R"({"status":"success","message":"Webhook received"})";
+                res.prepare_payload();
+                http::write(socket, res);
+            }else{
+                // Send OK response
+                http::response<http::string_body> res{http::status::ok, req.version()};
+                res.set(http::field::content_type, "application/json");
+                res.body() = R"({"status":"success","message":"Webhook received - Trade Fialed"})";
+                res.prepare_payload();
+                http::write(socket, res);
+            }
 
 
             // Send OK response
