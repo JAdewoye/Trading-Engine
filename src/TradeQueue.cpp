@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <mutex>
+#include <thread>
 std::mutex cout_mutex;
 //----------------------------------------------------------------------------------
 // Function Definitions
@@ -19,7 +20,7 @@ TradeQueue::pushBack(uint64_t timestamp,const std::string& symbol, const std::st
 
     do {
         current_back = back_.load(std::memory_order_relaxed);
-        next_back = (current_back + 1) % (capacity_ + 1);
+        next_back = (current_back + 1) % (capacity_);
 
         // Check if the queue is full
         if (next_back == front_.load(std::memory_order_acquire)) {
@@ -32,10 +33,13 @@ TradeQueue::pushBack(uint64_t timestamp,const std::string& symbol, const std::st
     Trade trade = {timestamp, symbol, side, price};
     // Write data after a slot has been successfully reserved
     buffer_[current_back] = Cell{true, trade}; 
+
+#ifdef TESTING
     {
         std::lock_guard<std::mutex> lg(cout_mutex);
         std::cout << "push(" << current_back << ")\n";
     }
+#endif
 
     return true;
 }
@@ -52,22 +56,24 @@ TradeQueue::popFront(Cell& result)
     do{
         current_front = front_.load(std::memory_order_acquire);
         current_back = back_.load(std::memory_order_acquire);
-        corrected_front = current_front + 1 % (capacity_ + 1);
+        corrected_front = (current_front + 1) % (capacity_);
 
         // queue is empty
-        if (current_front >= current_back){
+        if ((current_front == current_back) || (corrected_front >= capacity_)) {
             return false;
         }
 
     } while (!front_.compare_exchange_weak(current_front, corrected_front, std::memory_order_release, std::memory_order_relaxed));
 
+
     while (buffer_[current_front].occupied.load(std::memory_order_acquire) == false) {
         // Busy-wait until the cell is occupied
+        std::this_thread::yield();
     }
 
     // Because we claimed the front index and the queue is not empty, we can safely read the trade
     result = buffer_[current_front];
-
+    buffer_[current_front].occupied.store(false, std::memory_order_relaxed); 
 #ifdef TESTING 
     {
         std::lock_guard<std::mutex> lg(cout_mutex);

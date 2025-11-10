@@ -15,9 +15,9 @@ int main()
 {
 	std::cout << "Trading Engine Starting...\n";
     try {
-        TradeQueue tradeQueue(200);
-        TradeExecutionPool executionPool(100, tradeQueue);
-        HttpServer server("http_server", HTTP_DEFAULT_PORT, tradeQueue, 200);
+        TradeQueue tradeQueue(5);
+        TradeExecutionPool executionPool(5, tradeQueue);
+        HttpServer server("http_server", HTTP_DEFAULT_PORT, tradeQueue, 5);
         
         server.start();
         std::cin.get();
