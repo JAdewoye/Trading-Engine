@@ -4,7 +4,7 @@
     {
       "label": "Conan install",
       "type": "shell",
-      "command": "conan install . --output-folder=build --build=missing",
+      "command": "conan install . -s compiler.cppstd=17 --output-folder=build --build=missing",
       "options": {
         "cwd": "${workspaceFolder}"
       },

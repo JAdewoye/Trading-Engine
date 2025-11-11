@@ -41,6 +41,11 @@ C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/Boost-release-x86_64-data.cma
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/BoostConfig.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/BoostConfigVersion.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/BoostTargets.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/PostgreSQL-Target-release.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/PostgreSQL-release-x86_64-data.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/PostgreSQLConfig.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/PostgreSQLConfigVersion.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/PostgreSQLTargets.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/ZLIB-Target-release.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/ZLIB-release-x86_64-data.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/ZLIBConfig.cmake
@@ -48,6 +53,11 @@ C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/ZLIBConfigVersion.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/ZLIBTargets.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/cmakedeps_macros.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/conan_toolchain.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/libpqxx-Target-release.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/libpqxx-config-version.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/libpqxx-config.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/libpqxx-release-x86_64-data.cmake
+C:/Users/JoshuaAdewoye/Useful/Trading-Engine/build/libpqxxTargets.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/CMakeFiles/4.1.2/CMakeCXXCompiler.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/CMakeFiles/4.1.2/CMakeRCCompiler.cmake
 C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/CMakeFiles/4.1.2/CMakeSystem.cmake

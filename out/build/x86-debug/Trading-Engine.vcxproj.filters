@@ -16,6 +16,9 @@
     <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\TradeExecution.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\TradeDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\CMakeLists.txt" />
