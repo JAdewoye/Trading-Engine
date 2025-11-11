@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\httpserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\Trading-Engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\TradeQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\src\TradeExecution.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\JoshuaAdewoye\Useful\Trading-Engine\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{362409A0-B7F0-3E44-9FD1-5463745FE7A5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

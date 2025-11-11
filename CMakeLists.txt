@@ -1,4 +1,4 @@
-﻿cmake_minimum_required(VERSION 3.8)
+﻿cmake_minimum_required(VERSION 3.10)
 project(Trading-Engine LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -24,20 +24,29 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
-find_package(Boost 1.83 REQUIRED COMPONENTS system thread json)
+find_package(Boost REQUIRED COMPONENTS system thread json)
 
 if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost 1.83 or higher is required. 
-        Install via: sudo apt install libboost-system-dev libboost-thread-dev")
+    message(FATAL_ERROR "Boost 1.83 or higher is required.")
 endif()
+
+# ------------------------ THREADING (Cross-platform) ------------------------
+# Use CMake's built-in threading support instead of hardcoding pthread
+find_package(Threads REQUIRED)
 
 # ------------------------- Executable -------------------------
 add_executable(Trading-Engine ${COMMON_SOURCES})
 
 target_compile_definitions(Trading-Engine PRIVATE ${COMMON_DEFS})
-target_include_directories(Trading-Engine PRIVATE ${INCLUDES} ${Boost_INCLUDE_DIRS})
+target_include_directories(Trading-Engine PRIVATE ${INCLUDES})
 
-target_link_libraries(Trading-Engine PRIVATE ${Boost_LIBRARIES} pthread)
+# Link libraries - Threads::Threads works on both Windows and Linux
+target_link_libraries(Trading-Engine PRIVATE 
+    Boost::system
+    Boost::thread
+    Boost::json
+    Threads::Threads  # Cross-platform threading
+)
 
 message(STATUS "Boost found at ${Boost_INCLUDE_DIRS}")
 message(STATUS "Boost libraries: ${Boost_LIBRARIES}")

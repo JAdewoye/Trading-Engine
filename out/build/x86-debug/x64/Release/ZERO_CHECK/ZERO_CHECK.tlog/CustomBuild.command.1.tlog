@@ -1,0 +1,10 @@
+^C:\USERS\JOSHUAADEWOYE\USEFUL\TRADING-ENGINE\OUT\BUILD\X86-DEBUG\CMAKEFILES\39A24A5700CFD615FAA0B8C4CE1D4D63\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/JoshuaAdewoye/Useful/Trading-Engine -BC:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/Trading-Engine.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
