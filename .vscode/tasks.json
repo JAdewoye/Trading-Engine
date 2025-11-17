@@ -2,13 +2,42 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Conan install",
+      "label": "Conan: Detect default profile",
       "type": "shell",
-      "command": "conan install . -s compiler.cppstd=17 --output-folder=build --build=missing",
+      "command": "conan profile detect --force",
+      "problemMatcher": []
+    },
+    {
+      "label": "Conan install (MSVC)",
+      "type": "shell",
+      "command": "conan install . --output-folder=out/build/windows-msvc-debug --build=missing -s build_type=Debug -s compiler.cppstd=17 -s compiler=msvc -s compiler.version=194 -s compiler.runtime=dynamic",
       "options": {
         "cwd": "${workspaceFolder}"
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Conan Install (Linux)",
+      "type": "shell",
+      "command": "conan install . --output-folder=out/build/linux-gcc-debug --build=missing -s build_type=Debug -s compiler.runtime=dynamic -s compiler.cppstd=17",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+
+  ],
+  "inputs": [
+    {
+      "id": "preset",
+      "type": "pickString",
+      "options": [
+        "windows-msvc-debug",
+        "windows-mingw-debug",
+        "linux-gcc-debug"
+      ],
+      "default": "windows-msvc-debug",
+      "description": "Select preset"
     }
   ]
 }

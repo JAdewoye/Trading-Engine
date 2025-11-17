@@ -4,7 +4,6 @@
         "conan": {}
     },
     "include": [
-        "out/build/x86-debug/CMakePresets.json",
-        "build/CMakePresets.json"
+        "out/build/windows-msvc-debug/CMakePresets.json"
     ]
 }

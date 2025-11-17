@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include "TradeQueue.h"
-#include <pqxx/pqxx>
+//#include <pqxx/pqxx>
 //----------------------------------------------------------------------------------
 // Macros
 //----------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ public:
 
     bool saveTrade(const Trade& trade);
 private:
-    std::unique_ptr<pqxx::connection> connection_;
+    //std::unique_ptr<pqxx::connection> connection_;
     void ensureTableExists();
 };
 
