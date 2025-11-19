@@ -1,3 +1,0 @@
-C:/Code/Trading/Trading-Engine/out/build/x64-debug/CMakeFiles/Trading-Engine.dir
-C:/Code/Trading/Trading-Engine/out/build/x64-debug/CMakeFiles/edit_cache.dir
-C:/Code/Trading/Trading-Engine/out/build/x64-debug/CMakeFiles/rebuild_cache.dir

@@ -1,3 +1,0 @@
-C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/CMakeFiles/Trading-Engine.dir
-C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/CMakeFiles/ALL_BUILD.dir
-C:/Users/JoshuaAdewoye/Useful/Trading-Engine/out/build/x86-debug/CMakeFiles/ZERO_CHECK.dir

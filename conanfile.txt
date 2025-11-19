@@ -1,6 +1,6 @@
 [requires]
 boost/1.83.0
-libpqxx/7.9.0
+libpqxx/7.10.3
 
 [tool_requires]
 cmake/3.27.7
@@ -8,6 +8,9 @@ cmake/3.27.7
 [generators]
 CMakeDeps
 CMakeToolchain
+
+[layout]
+cmake_layout
 
 [options]
 boost/*:shared=False

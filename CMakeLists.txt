@@ -25,16 +25,20 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
+# Add custom path to find libpqxx and other packages
+list(APPEND CMAKE_PREFIX_PATH
+     "${CMAKE_SOURCE_DIR}/out/build/windows-msvc-debug/build/generators")
+
 find_package(Boost REQUIRED COMPONENTS system thread json)
-#find_package(libpqxx REQUIRED)
+find_package(libpqxx CONFIG REQUIRED)
 
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Boost 1.83 or higher is required. Run cmake task to install dependencies via conan.")
 endif()
 
-# if(NOT libpqxx_FOUND)
-#     message(FATAL_ERROR "libpqxx is required. Run cmake task to install dependencies via conan.")
-# endif()
+if(NOT libpqxx_FOUND)
+    message(FATAL_ERROR "libpqxx is required. Run cmake task to install dependencies via conan.")
+endif()
 
 # ------------------------ THREADING (Cross-platform) ------------------------
 # Use CMake's built-in threading support instead of hardcoding pthread
@@ -53,7 +57,7 @@ target_link_libraries(Trading-Engine PRIVATE
     Boost::thread
     Boost::json
     Threads::Threads  # Cross-platform threading
-    #libpqxx::pqxx
+    libpqxx::pqxx
 )
 
 message(STATUS "Boost found at ${Boost_INCLUDE_DIRS}")
