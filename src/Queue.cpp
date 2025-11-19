@@ -2,6 +2,7 @@
 // Inlcudes
 //----------------------------------------------------------------------------------
 #include "Queue.h"
+#include "Trading-Engine.h"
 #include <stdexcept>
 #include <iostream>
 #include <mutex>
@@ -97,3 +98,4 @@ Queue<T>::getSize()
     }
 }
 //----------------------------------------------------------------------------------
+template class Queue<Trade>;

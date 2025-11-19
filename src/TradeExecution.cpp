@@ -48,5 +48,4 @@ TradeExecutionPool::logTradeExecution(const Trade& trade_entry)
 {
     Cell<Trade> trade_cell{true, trade_entry};
     trade_db_.log_queue_.pushBack(trade_cell);
-    std::cout << "Executed trade: " << trade_entry.side << " " << trade_entry.symbol << " at $" << trade_entry.price << "\n";
 }
