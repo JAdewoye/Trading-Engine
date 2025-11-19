@@ -2,13 +2,15 @@
 //----------------------------------------------------------------------------------
 // Inlcudes
 //----------------------------------------------------------------------------------
+#include "Queue.h"
+#include "Trading-Engine.h"
 #include <string>
 #include <memory>
-#include "TradeQueue.h"
 #include <pqxx/pqxx>
 //----------------------------------------------------------------------------------
-// Macros
+// struct Definitions
 //----------------------------------------------------------------------------------
+
 //----------------------------------------------------------------------------------
 // Class Definitions
 //----------------------------------------------------------------------------------
@@ -16,10 +18,13 @@ class TradeDatabase {
 public:
     TradeDatabase(const std::string& connection_string);
     ~TradeDatabase();
-
+    
     bool saveTrade(const Trade& trade);
+
+    Queue<Trade> log_queue_{1000};
 private:
-    std::unique_ptr<pqxx::connection> connection_;
     void ensureTableExists();
+    
+    std::unique_ptr<pqxx::connection> connection_;
 };
 

@@ -1,19 +1,21 @@
 //----------------------------------------------------------------------------------
 // Inlcudes
 //----------------------------------------------------------------------------------
-#include "TradeQueue.h"
+#include "Queue.h"
 #include <stdexcept>
 #include <iostream>
 #include <mutex>
 #include <thread>
+
 std::mutex cout_mutex;
 //----------------------------------------------------------------------------------
 // Function Definitions
 //----------------------------------------------------------------------------------
-TradeQueue::TradeQueue(const std::size_t capacity): buffer_(capacity + 1), front_(0), back_(0), capacity_(capacity){}
+template<typename T>
+Queue<T>::Queue(const std::size_t capacity): buffer_(capacity + 1), front_(0), back_(0), capacity_(capacity){}
 //----------------------------------------------------------------------------------
-bool
-TradeQueue::pushBack(uint64_t timestamp,const std::string& symbol, const std::string& side, double price)
+template<typename T> bool
+Queue<T>::pushBack(const Cell<T>& entry)
 {
     size_t next_back;
     size_t current_back;
@@ -30,9 +32,8 @@ TradeQueue::pushBack(uint64_t timestamp,const std::string& symbol, const std::st
         // Attempt to claim the next back index
     } while (!back_.compare_exchange_weak(current_back, next_back, std::memory_order_release, std::memory_order_relaxed));
 
-    Trade trade = {timestamp, symbol, side, price};
     // Write data after a slot has been successfully reserved
-    buffer_[current_back] = Cell{true, trade}; 
+    buffer_[current_back] = entry;
 
 #ifdef TESTING
     {
@@ -44,8 +45,8 @@ TradeQueue::pushBack(uint64_t timestamp,const std::string& symbol, const std::st
     return true;
 }
 //----------------------------------------------------------------------------------
-bool
-TradeQueue::popFront(Cell& result)
+template<typename T> bool
+Queue<T>::popFront(Cell<T>& result)
 {
     // Claim the front index using the atomic operation fetch_add to incrmement front index for next pop.
     size_t current_front;
@@ -83,8 +84,8 @@ TradeQueue::popFront(Cell& result)
     return true;
 }
 //----------------------------------------------------------------------------------
-size_t
-TradeQueue::getSize()
+template<typename T> size_t
+Queue<T>::getSize()
 {
     size_t current_back = back_.load(std::memory_order_acquire);
     size_t current_front = front_.load(std::memory_order_acquire);

@@ -11,7 +11,7 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/json.hpp>
-#include "TradeQueue.h"
+#include "Queue.h"
 
 
 namespace asio  = boost::asio;
@@ -19,7 +19,7 @@ using tcp       = asio::ip::tcp;
 //----------------------------------------------------------------------------------
 // Function Definitions
 //----------------------------------------------------------------------------------
-HttpServer::HttpServer(const std::string& name, unsigned short port, TradeQueue& queue, size_t num_workers)
+HttpServer::HttpServer(const std::string& name, unsigned short port, Queue<Trade>& queue, size_t num_workers)
     : Server(name), 
       port_(port),
       queue_(queue),
@@ -118,8 +118,11 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
                 ).count()
             );
 
+            Trade trade{timestamp, symbol, side, price};
+            Cell<Trade> trade_entry{false, trade};
+
             // Enqueue trade
-            if (queue_.pushBack(timestamp, symbol, side, price)) {
+            if (queue_.pushBack(trade_entry)) {
                 // Send OK response
                 http::response<http::string_body> res{http::status::ok, req.version()};
                 res.set(http::field::content_type, "application/json");

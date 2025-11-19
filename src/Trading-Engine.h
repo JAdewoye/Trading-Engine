@@ -1,8 +1,14 @@
-﻿// Trading-Engine.h : Include file for standard system include files,
-// or project specific include files.
-
-#pragma once
-
+﻿#pragma once
+//----------------------------------------------------------------------------------
+// Includes
+//----------------------------------------------------------------------------------
 #include <iostream>
-
-// TODO: Reference additional headers your program requires here.
+//----------------------------------------------------------------------------------
+// Struct Definitions
+//----------------------------------------------------------------------------------
+struct Trade {
+    uint64_t timestamp;
+    std::string symbol;
+    std::string side;
+    double price;
+};

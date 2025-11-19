@@ -2,7 +2,9 @@
 //----------------------------------------------------------------------------------
 // Inlcudes
 //----------------------------------------------------------------------------------
-#include "TradeQueue.h"
+#include "Queue.h"
+#include "TradeDatabase.h"
+#include "Trading-Engine.h"
 #include <vector>
 #include <thread>
 #include <atomic>
@@ -17,16 +19,17 @@
 //----------------------------------------------------------------------------------
 class TradeExecutionPool {
 public:
-    TradeExecutionPool(std::size_t num_workers, TradeQueue& trade_queue);
+    TradeExecutionPool(std::size_t num_workers, Queue<Trade>& trade_queue, TradeDatabase& trade_db);
     ~TradeExecutionPool();
 
 private:
     std::vector<std::thread> workers_;
     std::atomic<bool> stop_requested_ = false;
-    TradeQueue& trade_queue_;
+    Queue<Trade>& trade_queue_;
+    TradeDatabase& trade_db_;
 
-    void worker_loop(void);
-    void execute_trade(const Cell& cell);
-    void log_trade_execution(const Cell& cell);
+    void workerLoop(void);
+    void executeTrade(const Trade& cell);
+    void logTradeExecution(const Trade& cell);
 };
 

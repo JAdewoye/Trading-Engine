@@ -3,9 +3,10 @@
 //----------------------------------------------------------------------------------
 #include "httpserver.h"
 #include "Trading-Engine.h"
-#include <iostream>
-#include "TradeQueue.h"
+#include "Queue.h"
 #include "TradeExecution.h"
+#include "TradeDatabase.h"
+#include <iostream>
 
 //----------------------------------------------------------------------------------
 // Function Definitions
@@ -15,9 +16,11 @@ int main()
 {
 	std::cout << "Trading Engine Starting...\n";
     try {
-        TradeQueue tradeQueue(5);
-        TradeExecutionPool executionPool(5, tradeQueue);
-        HttpServer server("http_server", HTTP_DEFAULT_PORT, tradeQueue, 5);
+        Queue<Trade> trade_queue(5);
+        TradeDatabase trade_db("dbname=trading_engine user=trader password=secret host=localhost port=5432");
+        TradeExecutionPool execution_pool(5, trade_queue, trade_db);
+        HttpServer server("http_server", HTTP_DEFAULT_PORT, trade_queue, 5);
+
         
         server.start();
         std::cin.get();

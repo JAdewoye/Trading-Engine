@@ -5,10 +5,11 @@
 //----------------------------------------------------------------------------------
 // Function Definitions
 //----------------------------------------------------------------------------------
-TradeExecutionPool::TradeExecutionPool(std::size_t num_workers, TradeQueue& trade_queue) : stop_requested_(false), trade_queue_(trade_queue)
+TradeExecutionPool::TradeExecutionPool(std::size_t num_workers, Queue<Trade>& trade_queue, TradeDatabase& trade_db) : 
+stop_requested_(false), trade_queue_(trade_queue), trade_db_(trade_db)
 {
     for (std::size_t i = 0; i < num_workers; ++i) {
-        workers_.emplace_back(&TradeExecutionPool::worker_loop, this);
+        workers_.emplace_back(&TradeExecutionPool::workerLoop, this);
     }
 }
 //----------------------------------------------------------------------------------
@@ -23,13 +24,13 @@ TradeExecutionPool::~TradeExecutionPool()
 }
 //----------------------------------------------------------------------------------
 void 
-TradeExecutionPool::worker_loop()
+TradeExecutionPool::workerLoop()
 {
-    Cell trade;
+    Cell<Trade> trade_entry;
     while (stop_requested_.load(std::memory_order_acquire) == false) {
-        if (trade_queue_.popFront(trade)){
-            execute_trade(trade);
-            log_trade_execution(trade);
+        if (trade_queue_.popFront(trade_entry)){
+            executeTrade(trade_entry.entry);
+            logTradeExecution(trade_entry.entry);
         } else{
             std::this_thread::yield();
         }
@@ -37,13 +38,15 @@ TradeExecutionPool::worker_loop()
 }
 //----------------------------------------------------------------------------------
 void
-TradeExecutionPool::execute_trade(const Cell& cell)
+TradeExecutionPool::executeTrade(const Trade& trade_entry)
 {
 
 }
 //----------------------------------------------------------------------------------
 void
-TradeExecutionPool::log_trade_execution(const Cell& cell)
+TradeExecutionPool::logTradeExecution(const Trade& trade_entry)
 {
-    std::cout << "Executed trade: " << cell.trade.side << " " << cell.trade.symbol << " at $" << cell.trade.price << "\n";
+    Cell<Trade> trade_cell{true, trade_entry};
+    trade_db_.log_queue_.pushBack(trade_cell);
+    std::cout << "Executed trade: " << trade_entry.side << " " << trade_entry.symbol << " at $" << trade_entry.price << "\n";
 }
