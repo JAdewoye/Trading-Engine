@@ -8,8 +8,9 @@
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/out/build/${presetName}/conan_toolchain.cmake",
-        "CMAKE_POLICY_DEFAULT_CMP0091": "NEW"
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/out/build/${presetName}/build/generators/conan_toolchain.cmake",
+        "CMAKE_POLICY_DEFAULT_CMP0091": "NEW",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
       }
     },
     {

@@ -5,7 +5,7 @@
       "name": "Debug Trading-Engine",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/out/build/linux-debug/Trading-Engine", // path to your executable
+      "program": "${command:cmake.launchTargetPath}", // path to your executable
       "args": [], // any command-line arguments for your program
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}", // working directory

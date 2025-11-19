@@ -3,6 +3,7 @@ project(Trading-Engine LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(INCLUDES
     ${CMAKE_SOURCE_DIR}/src)
@@ -20,7 +21,7 @@ set(COMMON_DEFS
     TESTING
 )
 
-# -------------------------- BOOST --------------------------
+# -------------------------- Packages --------------------------
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
@@ -31,6 +32,13 @@ list(APPEND CMAKE_PREFIX_PATH
 
 find_package(Boost REQUIRED COMPONENTS system thread json)
 find_package(libpqxx CONFIG REQUIRED)
+find_package(Threads REQUIRED)
+
+get_target_property(PQXX_INCLUDES libpqxx::pqxx INTERFACE_INCLUDE_DIRECTORIES)
+message(STATUS "PQXX includes: ${PQXX_INCLUDES}")
+
+get_target_property(BOOST_INCLUDES Boost::boost INTERFACE_INCLUDE_DIRECTORIES)
+message(STATUS "Boost includes: ${BOOST_INCLUDES}")
 
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Boost 1.83 or higher is required. Run cmake task to install dependencies via conan.")
@@ -40,13 +48,8 @@ if(NOT libpqxx_FOUND)
     message(FATAL_ERROR "libpqxx is required. Run cmake task to install dependencies via conan.")
 endif()
 
-# ------------------------ THREADING (Cross-platform) ------------------------
-# Use CMake's built-in threading support instead of hardcoding pthread
-find_package(Threads REQUIRED)
-
 # ------------------------- Executable -------------------------
 add_executable(Trading-Engine ${COMMON_SOURCES})
-
 target_compile_definitions(Trading-Engine PRIVATE ${COMMON_DEFS})
 target_include_directories(Trading-Engine PRIVATE ${INCLUDES})
 
