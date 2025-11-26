@@ -4,6 +4,7 @@
 //----------------------------------------------------------------------------------
 #include "Queue.h"
 #include "Trading-Engine.h"
+#include "HttpClient.h"
 #include <string>
 #include <memory>
 #include <pqxx/pqxx>
@@ -18,15 +19,33 @@
 //----------------------------------------------------------------------------------
 class TradeDatabase {
 public:
-    TradeDatabase(const std::string& connection_string);
-    ~TradeDatabase();
+    struct DBConfig {
+        std::string host;
+        std::string port;
+        std::string dbname;
+        std::string user;
+        std::string password;
+    };
+
+    struct DBentry{
+        Trade& trade_ref;
+        HttpClient::OrderResponse& response_ref;
+    };
+
+    TradeDatabase(const std::string& connection_string) : running_(false), connected_(false), connection_string_(connection_string) {}
+    ~TradeDatabase(){
+        stop();
+        if (connection_ && connection_->is_open()) {
+            std::cout << "Database connection closed.\n";
+        }
+    }
     
-    bool saveTrade(const Trade& trade);
+    bool saveTrade(const DBentry& db_entry);
     void workerLoop();
     void start();
     void stop();
     bool isConnected();
-    Queue<Trade> log_queue_{TRADE_LOG_QUEUE_SIZE};
+    Queue<DBentry> log_queue_{TRADE_LOG_QUEUE_SIZE};
 
 private:
     void tryConnect();

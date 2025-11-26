@@ -9,8 +9,9 @@ set(INCLUDES
     ${CMAKE_SOURCE_DIR}/src)
 
 set(COMMON_SOURCES
-    ${CMAKE_SOURCE_DIR}/src/server.cpp
-    ${CMAKE_SOURCE_DIR}/src/httpserver.cpp
+    ${CMAKE_SOURCE_DIR}/src/Server.cpp
+    ${CMAKE_SOURCE_DIR}/src/HttpServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/HttpClient.cpp
     ${CMAKE_SOURCE_DIR}/src/Trading-Engine.cpp
     ${CMAKE_SOURCE_DIR}/src/Queue.cpp
     ${CMAKE_SOURCE_DIR}/src/TradeExecution.cpp

@@ -13,8 +13,9 @@
 // Struct Definitions
 //----------------------------------------------------------------------------------
 struct Trade {
-    uint64_t timestamp;
-    std::string symbol;
-    std::string side;
-    double price;
+    uint64_t timestamp = 0;
+    std::string symbol = 0;
+    std::string side = 0;
+    double price = 0;
+    double quantity = 0;
 };

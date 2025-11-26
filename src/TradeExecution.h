@@ -5,6 +5,7 @@
 #include "Queue.h"
 #include "TradeDatabase.h"
 #include "Trading-Engine.h"
+#include "HttpClient.h"
 #include <vector>
 #include <thread>
 #include <atomic>
@@ -30,6 +31,6 @@ private:
 
     void workerLoop(void);
     void executeTrade(const Trade& cell);
-    void logTradeExecution(const Trade& cell);
+    void logTradeExecution(const Trade& cell, const HttpClient::OrderResponse& response);
 };
 

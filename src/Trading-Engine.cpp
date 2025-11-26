@@ -1,7 +1,7 @@
 ﻿//----------------------------------------------------------------------------------
 // Inlcudes
 //----------------------------------------------------------------------------------
-#include "httpserver.h"
+#include "HttpServer.h"
 #include "Trading-Engine.h"
 #include "Queue.h"
 #include "TradeExecution.h"
@@ -23,18 +23,15 @@ int main()
         
         std::cout << "Port: ";
         std::cin >> port;
-        std::cout << "\n";
         
         std::cout << "DB Name: ";
         std::cin >> db_name;
         
         std::cout << "User: ";
         std::cin >> db_user;
-        std::cout << "\n";
         
         std::cout << "Password: ";
         std::cin >> db_password;
-        std::cout << "\n";
         
         std::string connection_str = "dbname=" + db_name + " user=" + db_user + " password=" + db_password + " host=localhost port=" + port;
         TradeDatabase trade_db(connection_str);

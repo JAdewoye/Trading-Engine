@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------
 // Inlcudes
 //----------------------------------------------------------------------------------
-#include "server.h"
+#include "Server.h"
 #include <iostream>
 #include <chrono>
 using namespace std::chrono_literals;

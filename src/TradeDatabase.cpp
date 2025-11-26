@@ -6,21 +6,12 @@
 //----------------------------------------------------------------------------------
 // Function Definitions
 //----------------------------------------------------------------------------------
-TradeDatabase::TradeDatabase(const std::string& connection_string) :
-running_(false), connected_(false), connection_string_(connection_string) {}
-//----------------------------------------------------------------------------------
-TradeDatabase::~TradeDatabase()
-{
-    stop();
-    if (connection_ && connection_->is_open()) {
-        std::cout << "Database connection closed.\n";
-    }
-}
-//----------------------------------------------------------------------------------
 void
 TradeDatabase::workerLoop()
 {
-    Cell<Trade> trade_entry;
+    Trade trade;
+    HttpClient::OrderResponse response;
+   DBentry db_entry{trade, response};
     while (running_.load(std::memory_order_acquire)) {
         if (!connected_.load(std::memory_order_acquire)) {
                 tryConnect();
@@ -28,8 +19,8 @@ TradeDatabase::workerLoop()
                 continue;
         }
 
-        if (log_queue_.popFront(trade_entry)){
-            saveTrade(trade_entry.entry);
+        if (log_queue_.popFront(db_entry)){
+            saveTrade(db_entry);
         } else{
             std::this_thread::yield();
         }
@@ -37,17 +28,18 @@ TradeDatabase::workerLoop()
 }
 //----------------------------------------------------------------------------------
 bool
-TradeDatabase::saveTrade(const Trade& trade_entry)
+TradeDatabase::saveTrade(const DBentry& db_entry)
 {
     try {
         pqxx::work tx(*connection_);
 
+        // TODO add trade but also response into the database
         tx.exec_params(
             "INSERT INTO trades (symbol, side, price, timestamp) VALUES ($1, $2, $3, $4)",
-            trade_entry.symbol,
-            trade_entry.side,
-            trade_entry.price,
-            trade_entry.timestamp
+            db_entry.trade_ref.symbol,
+            db_entry.trade_ref.side,
+            db_entry.trade_ref.price,
+            db_entry.trade_ref.timestamp
         );
 
         tx.commit();

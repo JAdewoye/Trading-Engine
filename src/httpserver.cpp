@@ -1,7 +1,7 @@
 //----------------------------------------------------------------------------------
 // Inlcudes
 //----------------------------------------------------------------------------------
-#include "httpserver.h"
+#include "HttpServer.h"
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -42,7 +42,7 @@ HttpServer::run()
 {
     try {
     
-        std::cout << "HTTP Server started on port " << HttpServer::port_ << ". We are now read to trade!\n";
+        std::cout << "HTTP Server started on port " << HttpServer::port_ << ". We are now ready to trade!\n";
 
         auto guard = boost::asio::make_work_guard(io_context_);
 
@@ -118,11 +118,10 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
                 ).count()
             );
 
-            Trade trade{timestamp, symbol, side, price};
-            Cell<Trade> trade_entry{false, trade};
+            Trade trade_entry{timestamp, symbol, side, price};
 
             // Enqueue trade
-            if (queue_.pushBack(trade_entry)) {
+            if (queue_.pushBack(std::move(trade_entry))) {
                 // Send OK response
                 http::response<http::string_body> res{http::status::ok, req.version()};
                 res.set(http::field::content_type, "application/json");
