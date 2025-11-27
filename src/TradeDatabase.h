@@ -32,7 +32,7 @@ public:
         HttpClient::OrderResponse response_ref;
     };
 
-    TradeDatabase(const std::string& connection_string) : running_(false), connected_(false), connection_string_(connection_string) {}
+    TradeDatabase() : running_(false), connected_(false), connection_string_(NEON_CONNECTION_STRING) {}
     ~TradeDatabase(){
         stop();
         if (connection_ && connection_->is_open()) {

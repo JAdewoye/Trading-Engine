@@ -2,6 +2,7 @@
 // Inlcudes
 //----------------------------------------------------------------------------------
 #include "TradeDatabase.h"
+#include "Trading-Engine.h"
 #include <iostream>
 //----------------------------------------------------------------------------------
 // Function Definitions
@@ -37,15 +38,27 @@ TradeDatabase::saveTrade(const DBentry& db_entry)
     
     try {
         pqxx::work tx(*connection_);
-
-        // TODO add trade but also response into the database
-        tx.exec_params(
-            "INSERT INTO trades (symbol, side, price, timestamp) VALUES ($1, $2, $3, $4)",
+        pqxx::result r;
+        std::string cmd = "INSERT INTO " + std::string(NEON_DB_NAME) + " (symbol, side, price, quantity, timestamp, order_id, custom_order_id, code, msg, request_time) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)"; 
+        // TODO add IDs so can be used by multiple users
+        r = tx.exec_params(
+            cmd,
             db_entry.trade_ref.symbol,
             db_entry.trade_ref.side,
             db_entry.trade_ref.price,
-            db_entry.trade_ref.timestamp
+            db_entry.trade_ref.quantity,
+            db_entry.trade_ref.timestamp,
+            db_entry.response_ref.order_id,
+            db_entry.response_ref.custom_order_id,
+            db_entry.response_ref.code,
+            db_entry.response_ref.msg,
+            db_entry.response_ref.request_time
         );
+
+        if (r.affected_rows() != 1) {
+            std::cerr << "Error saving trade: Unexpected number of affected rows: " << r.affected_rows() << "\n";
+            return false;
+        }
 
         tx.commit();
         return true;

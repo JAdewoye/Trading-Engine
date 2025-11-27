@@ -68,6 +68,7 @@ Queue<T>::pushBack(T&& entry)
     return true;
 }
 //----------------------------------------------------------------------------------
+// TODO fix function
 template<typename T> bool
 Queue<T>::popFront(T& result)
 {

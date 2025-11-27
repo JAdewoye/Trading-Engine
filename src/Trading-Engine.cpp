@@ -17,31 +17,10 @@ int main()
     std::cout << "Trading Engine Starting...\n";
 
     try {
-        std::string port, db_name, db_user, db_password;
-
-        std::cout << "Port: ";
-        std::cin >> port;
-
-        std::cout << "DB Name: ";
-        std::cin >> db_name;
-
-        std::cout << "User: ";
-        std::cin >> db_user;
-
-        std::cout << "Password: ";
-        std::cin >> db_password;
-
-        std::cout << "[MAIN] Building connection string...\n";
-        std::string connection_str =
-            "dbname=" + db_name +
-            " user=" + db_user +
-            " password=" + db_password +
-            " host=localhost port=" + port;
-
         std::unique_ptr<TradeDatabase> trade_db;
         try {
             std::cout << "[MAIN] Constructing TradeDatabase...\n";
-            trade_db = std::make_unique<TradeDatabase>(connection_str);
+            trade_db = std::make_unique<TradeDatabase>();
             std::cout << "[MAIN] TradeDatabase OK.\n";
         }
         catch (const std::exception& e) {
