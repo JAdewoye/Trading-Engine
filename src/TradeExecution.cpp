@@ -71,6 +71,6 @@ TradeExecutionPool::executeTrade(const Trade& trade_entry)
 void
 TradeExecutionPool::logTradeExecution(const Trade& trade_entry, const HttpClient::OrderResponse& response)
 {
-    TradeDatabase::DBentry db_entry{trade_entry, response};
+    TradeDatabase::DBentry db_entry(trade_entry, response);
     trade_db_.log_queue_.pushBack(std::move(db_entry));
 }

@@ -13,7 +13,7 @@ set(COMMON_SOURCES
     ${CMAKE_SOURCE_DIR}/src/HttpServer.cpp
     ${CMAKE_SOURCE_DIR}/src/HttpClient.cpp
     ${CMAKE_SOURCE_DIR}/src/Trading-Engine.cpp
-    ${CMAKE_SOURCE_DIR}/src/Queue.cpp
+    #${CMAKE_SOURCE_DIR}/src/Queue.cpp
     ${CMAKE_SOURCE_DIR}/src/TradeExecution.cpp
     ${CMAKE_SOURCE_DIR}/src/TradeDatabase.cpp
 )

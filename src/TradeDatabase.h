@@ -28,8 +28,8 @@ public:
     };
 
     struct DBentry{
-        Trade& trade_ref;
-        HttpClient::OrderResponse& response_ref;
+        Trade trade_ref;
+        HttpClient::OrderResponse response_ref;
     };
 
     TradeDatabase(const std::string& connection_string) : running_(false), connected_(false), connection_string_(connection_string) {}
@@ -50,7 +50,6 @@ public:
 private:
     void tryConnect();
 
-    
     std::unique_ptr<pqxx::connection> connection_;
     std::atomic<bool> running_;
     std::thread worker_thread_;

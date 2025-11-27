@@ -11,7 +11,7 @@ TradeDatabase::workerLoop()
 {
     Trade trade;
     HttpClient::OrderResponse response;
-   DBentry db_entry{trade, response};
+    DBentry db_entry{trade, response};
     while (running_.load(std::memory_order_acquire)) {
         if (!connected_.load(std::memory_order_acquire)) {
                 tryConnect();
@@ -30,6 +30,11 @@ TradeDatabase::workerLoop()
 bool
 TradeDatabase::saveTrade(const DBentry& db_entry)
 {
+    if (!connection_) { 
+        std::cerr << "Error saving trade: Database connection is not established (connection_ is null).\n";
+        return false;
+    }
+    
     try {
         pqxx::work tx(*connection_);
 

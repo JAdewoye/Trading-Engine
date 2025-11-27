@@ -27,8 +27,8 @@ async def main():
                         help="Side field in JSON payload (default: BUY)")
     parser.add_argument("--price", type=float, default=150.25,
                         help="Price field in JSON payload (default: 150.25)")
-    parser.add_argument("--hz", type=float, default=1000.0,
-                        help="Messages per second (default: 10.0)")
+    parser.add_argument("--hz", type=float, default=10.0,
+                        help="Messages per second (default: 100.0)")
     parser.add_argument("--duration", type=float, default=10.0,
                         help="How long to send for, in seconds (default: 10)")
     parser.add_argument("--max_in_flight", type=int, default=1000,

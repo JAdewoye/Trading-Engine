@@ -12,11 +12,11 @@
 class HttpClient {
 public:
     struct OrderResponse {
-        std::string order_id = 0;
-        std::string custom_order_id = 0;
-        std::string code = 0;
-        std::string msg = 0;
-        std::string request_time = 0;
+        std::string order_id{};
+        std::string custom_order_id{};
+        std::string code{};
+        std::string msg{};
+        std::string request_time{};
     };
 
     HttpClient(const std::string& api_key, const std::string& api_secret)

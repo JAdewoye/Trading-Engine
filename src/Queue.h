@@ -37,13 +37,11 @@ private:
     alignas(64) std::atomic_size_t back_;
     const size_t capacity_;
 };
-
-std::mutex cout_mutex;
 //----------------------------------------------------------------------------------
 // Function Definitions
 //----------------------------------------------------------------------------------
 template<typename T>
-Queue<T>::Queue(const std::size_t capacity): buffer_(capacity + 1), front_(0), back_(0), capacity_(capacity){}
+Queue<T>::Queue(const std::size_t capacity): buffer_(capacity), front_(0), back_(0), capacity_(capacity){}
 //----------------------------------------------------------------------------------
 template<typename T> bool
 Queue<T>::pushBack(T&& entry)
@@ -66,13 +64,6 @@ Queue<T>::pushBack(T&& entry)
     // Write data after a slot has been successfully reserved
     buffer_[current_back].entry = std::move(entry);
     buffer_[current_back].occupied.store(true, std::memory_order_release);
-
-#ifdef TESTING
-    {
-        std::lock_guard<std::mutex> lg(cout_mutex);
-        std::cout << "push(" << current_back << ")\n";
-    }
-#endif
 
     return true;
 }
@@ -107,12 +98,7 @@ Queue<T>::popFront(T& result)
     // Because we claimed the front index and the queue is not empty, we can safely read the trade
     result = std::move(buffer_[current_front].entry);
     buffer_[current_front].occupied.store(false, std::memory_order_relaxed); 
-#ifdef TESTING 
-    {
-        std::lock_guard<std::mutex> lg(cout_mutex);
-        std::cout << "pop(" << current_front << ")\n";
-    }
-#endif
+    
     return true;
 }
 //----------------------------------------------------------------------------------
