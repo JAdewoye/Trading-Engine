@@ -77,8 +77,6 @@ void HttpServer::start_accept() {
     auto socket = std::make_shared<tcp::socket>(io_context_);
     acceptor_.async_accept(*socket, [this, socket](boost::system::error_code ec) mutable {
         if (!ec) {
-            // Handle the connection in a separate function
-            std::cout << "Accepted new connection\n";
             handle_connection(std::move(*socket));
         } else {
             std::cout << "Accept error: " << ec.message() << "\n";

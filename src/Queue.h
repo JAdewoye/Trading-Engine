@@ -58,6 +58,11 @@ Queue<T>::pushBack(T&& entry)
             return false; 
         }
 
+        if (buffer_[current_back].occupied.load(std::memory_order_acquire)) {
+            // Cell still occupied, queue is effectively full
+            return false;
+        }
+
         // Attempt to claim the next back index
     } while (!back_.compare_exchange_weak(current_back, next_back, std::memory_order_release, std::memory_order_relaxed));
 
@@ -72,33 +77,30 @@ Queue<T>::pushBack(T&& entry)
 template<typename T> bool
 Queue<T>::popFront(T& result)
 {
-    // Claim the front index using the atomic operation fetch_add to incrmement front index for next pop.
     size_t current_front;
     size_t current_back;
-    size_t corrected_front;
+    size_t next_front = 0;
 
-    // Check if the queue is empty. If so, we need to rollback the front index increment and return false.
     do{
         current_front = front_.load(std::memory_order_acquire);
         current_back = back_.load(std::memory_order_acquire);
-        corrected_front = (current_front + 1) % (capacity_);
-
-        // queue is empty
-        if ((current_front == current_back) || (corrected_front >= capacity_)) {
+        
+        // Check if queue is empty
+        if (current_front == current_back) {
             return false;
         }
+        
+        if (buffer_[current_front].occupied.load(std::memory_order_acquire) == false) {
+            return false;
+        }
+        
+        next_front = (current_front + 1) % (capacity_);
 
-    } while (!front_.compare_exchange_weak(current_front, corrected_front, std::memory_order_release, std::memory_order_relaxed));
-
-
-    while (buffer_[current_front].occupied.load(std::memory_order_acquire) == false) {
-        // Busy-wait until the cell is occupied
-        std::this_thread::yield();
-    }
+    } while (!front_.compare_exchange_weak(current_front, next_front, std::memory_order_release, std::memory_order_relaxed));
 
     // Because we claimed the front index and the queue is not empty, we can safely read the trade
     result = std::move(buffer_[current_front].entry);
-    buffer_[current_front].occupied.store(false, std::memory_order_relaxed); 
+    buffer_[current_front].occupied.store(false, std::memory_order_release); 
     
     return true;
 }

@@ -57,6 +57,7 @@ TradeExecutionPool::executeTrade(const Trade& trade_entry)
             std::cout << "Trade executed on retry: " << trade_entry.side << " " << trade_entry.symbol 
                       << " at $" << trade_entry.price << " Qty: " << trade_entry.quantity 
                       << " Order ID: " << response.order_id << "\n";
+        }else{
             std::cerr << "Failed to execute trade: " << trade_entry.side << " " << trade_entry.symbol 
                       << " at $" << trade_entry.price << " Qty: " << trade_entry.quantity 
                       << " Order ID: " << response.order_id 

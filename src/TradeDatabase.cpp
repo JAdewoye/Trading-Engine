@@ -16,7 +16,7 @@ TradeDatabase::workerLoop()
     while (running_.load(std::memory_order_acquire)) {
         if (!connected_.load(std::memory_order_acquire)) {
                 tryConnect();
-                std::this_thread::sleep_for(std::chrono::seconds(100));
+                std::this_thread::sleep_for(std::chrono::seconds(1));
                 continue;
         }
 
@@ -61,6 +61,7 @@ TradeDatabase::saveTrade(const DBentry& db_entry)
         }
 
         tx.commit();
+        std::cout << "Trade saved\n";
         return true;
     } catch (const std::exception& e) {
         std::cerr << "Error saving trade: " << e.what() << "\n";
