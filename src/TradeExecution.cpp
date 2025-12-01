@@ -39,21 +39,24 @@ TradeExecutionPool::workerLoop()
 void
 TradeExecutionPool::executeTrade(const Trade& trade_entry)
 {
-    std::string api_key;
-    std::string api_secret;
+    HttpClient client;
+    std::string payload = client.prepareOrderBody(
+        trade_entry.symbol,
+        trade_entry.side,
+        trade_entry.price,
+        trade_entry.quantity
+    );
 
-    HttpClient client(api_key, api_secret);
-    HttpClient::OrderResponse response = client.placeOrder(trade_entry.symbol, trade_entry.side, trade_entry.price, trade_entry.quantity);
-
-    if (response.code == "00000") {
+    HttpClient::OrderResponse response = client.placeOrder(payload);
+    if (response.success = true) {
         std::cout << "Trade executed: " << trade_entry.side << " " << trade_entry.symbol 
                   << " at $" << trade_entry.price << " Qty: " << trade_entry.quantity 
                   << " Order ID: " << response.order_id << "\n";
     } else {
         // Try again with a short delay to avoid rapid repeated requests
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        response = client.placeOrder(trade_entry.symbol, trade_entry.side, trade_entry.price, trade_entry.quantity);
-        if (response.code == "00000") {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        response = client.placeOrder(payload);
+        if (response.success = true) {
             std::cout << "Trade executed on retry: " << trade_entry.side << " " << trade_entry.symbol 
                       << " at $" << trade_entry.price << " Qty: " << trade_entry.quantity 
                       << " Order ID: " << response.order_id << "\n";

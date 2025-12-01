@@ -20,6 +20,7 @@ set(COMMON_SOURCES
 
 set(COMMON_DEFS
     TESTING
+    DEMO_TRADING
 )
 
 # -------------------------- Packages --------------------------

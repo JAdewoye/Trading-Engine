@@ -107,6 +107,7 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
             std::string symbol = json::value_to<std::string>(payload.at("symbol"));
             std::string side = json::value_to<std::string>(payload.at("side"));
             double price = json::value_to<double>(payload.at("price"));
+            double quantity = json::value_to<double>(payload.at("quantity"));
             std::cout << "Request to " << side << " " << symbol << " at $" << price << "\n";
 
             // Get current timestamp
@@ -116,7 +117,7 @@ HttpServer::handle_connection(boost::asio::ip::tcp::socket socket)
                 ).count()
             );
 
-            Trade trade_entry{timestamp, symbol, side, price};
+            Trade trade_entry{timestamp, symbol, side, price, quantity};
 
             // Enqueue trade
             if (queue_.pushBack(std::move(trade_entry))) {
